@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Retirement Plan Calculator</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <h1>Retirement Plan Calculator</h1>
+
+  <form id="calcForm">
+    <label>Current Age <input type="number" id="currentAge" value="40" /></label>
+    <label>Retirement Age <input type="number" id="retireAge" value="65" /></label>
+    <label>Last Age <input type="number" id="lastAge" value="95" /></label>
+
+    <label>Annual Income ($)
+      <input type="number" id="income" value="80000" />
+    </label>
+
+    <label>Current Savings ($)
+      <input type="number" id="savings" value="100000" />
+    </label>
+
+    <label>Annual Savings Rate (%)
+      <input type="number" id="saveRate" value="10" />
+    </label>
+
+    <label>Expected Return (%)
+      <input type="number" id="returnRate" value="6" />
+    </label>
+
+    <label>Annual Retirement Spending ($, today)
+      <input type="number" id="spend" value="50000" />
+    </label>
+
+    <label>Inflation Rate (%)
+      <input type="number" id="inflation" value="2.5" />
+    </label>
+
+    <button type="submit">Calculate</button>
+  </form>
+
+  <h2 id="summary"></h2>
+
+  <canvas id="chart"></canvas>
+
+  <table id="results">
+    <thead>
+      <tr>
+        <th>Age</th>
+        <th>Balance ($)</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script src="script.js"></script>
+</body>
+</html>
