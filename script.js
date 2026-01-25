@@ -1,73 +1,194 @@
-const form = document.getElementById("calcForm");
-const tbody = document.querySelector("#results tbody");
-const summary = document.getElementById("summary");
-let chart;
+let chart = null;
 
-form.addEventListener("submit", e => {
-  e.preventDefault();
-  runCalculation();
+function formatCurrency(value) {
+    return '$' + Math.round(value).toLocaleString();
+}
+
+function calculateSocialSecurity(income, maritalStatus = 'single') {
+    const maxBenefit = maritalStatus === 'married' ? 62400 : 41400;
+    const baseBenefit = Math.min(income * 0.35, maxBenefit);
+    return baseBenefit;
+}
+
+function calculate() {
+    const currentAge = parseInt(document.getElementById('currentAge').value);
+    const retirementAge = parseInt(document.getElementById('retirementAge').value);
+    const currentIncome = parseFloat(document.getElementById('currentIncome').value);
+    const incomeIncrease = parseFloat(document.getElementById('incomeIncrease').value) / 100;
+    const currentSavings = parseFloat(document.getElementById('currentSavings').value);
+    const savingsRate = parseFloat(document.getElementById('savingsRate').value) / 100;
+    const retirementSpending = parseFloat(document.getElementById('retirementSpending').value);
+    const returnBeforeRetirement = parseFloat(document.getElementById('returnBeforeRetirement').value) / 100;
+    const returnDuringRetirement = parseFloat(document.getElementById('returnDuringRetirement').value) / 100;
+    const inflationRate = parseFloat(document.getElementById('inflationRate').value) / 100;
+    const maritalStatus = document.getElementById('maritalStatus')?.value || 'single';
+
+    const endAge = 95;
+    let balance = currentSavings;
+    let income = currentIncome;
+    let totalContributions = 0;
+    let totalWithdrawals = 0;
+
+    const data = [];
+    const tableBody = document.getElementById('tableBody');
+    tableBody.innerHTML = '';
+
+    for (let age = currentAge; age < retirementAge; age++) {
+        const contribution = income * savingsRate;
+        balance = balance * (1 + returnBeforeRetirement) + contribution;
+        totalContributions += contribution;
+
+        data.push({
+            age,
+            income,
+            contribution,
+            withdrawal: 0,
+            balance,
+            isRetired: false
+        });
+
+        income = income * (1 + incomeIncrease);
+    }
+
+    let adjustedSpending = retirementSpending;
+    for (let age = retirementAge; age <= endAge; age++) {
+        const socialSecurity = calculateSocialSecurity(income / (1 + incomeIncrease), maritalStatus);
+        const withdrawal = Math.max(0, adjustedSpending - socialSecurity);
+        
+        balance = (balance * (1 + returnDuringRetirement)) - withdrawal;
+        totalWithdrawals += withdrawal;
+        adjustedSpending = adjustedSpending * (1 + inflationRate);
+
+        data.push({
+            age,
+            income: 0,
+            contribution: 0,
+            withdrawal,
+            balance: Math.max(0, balance),
+            isRetired: true
+        });
+
+        if (balance <= 0) break;
+    }
+
+    data.forEach(row => {
+        const tr = document.createElement('tr');
+        if (row.isRetired) tr.classList.add('retirement-row');
+        
+        tr.innerHTML = `
+            <td>Age ${row.age}</td>
+            <td>${row.income > 0 ? formatCurrency(row.income) : '-'}</td>
+            <td>${row.contribution > 0 ? formatCurrency(row.contribution) : '-'}</td>
+            <td>${row.withdrawal > 0 ? formatCurrency(row.withdrawal) : '-'}</td>
+            <td ${row.balance <= 0 ? 'class="shortage"' : ''}>${formatCurrency(row.balance)}</td>
+        `;
+        tableBody.appendChild(tr);
+    });
+
+    const finalBalance = data[data.length - 1].balance;
+    document.getElementById('finalBalance').textContent = formatCurrency(finalBalance);
+    document.getElementById('totalContributions').textContent = formatCurrency(totalContributions);
+    document.getElementById('totalWithdrawals').textContent = formatCurrency(totalWithdrawals);
+
+    const statusCard = document.getElementById('statusCard');
+    const statusElement = document.getElementById('status');
+    const finalBalanceCard = document.getElementById('finalBalanceCard');
+    
+    if (finalBalance > 500000) {
+        statusElement.textContent = 'Controlado ✅';
+        statusCard.classList.remove('warning', 'danger');
+        statusCard.classList.add('success');
+        finalBalanceCard.classList.remove('warning', 'danger');
+        finalBalanceCard.classList.add('success');
+    } else if (finalBalance > 0) {
+        statusElement.textContent = 'Precaución ⚠️';
+        statusCard.classList.remove('success', 'danger');
+        statusCard.classList.add('warning');
+        finalBalanceCard.classList.remove('success', 'danger');
+        finalBalanceCard.classList.add('warning');
+    } else {
+        statusElement.textContent = 'Peligro 🚨';
+        statusCard.classList.remove('success', 'warning');
+        statusCard.classList.add('danger');
+        finalBalanceCard.classList.remove('success', 'warning');
+        finalBalanceCard.classList.add('danger');
+    }
+
+    updateChart(data);
+}
+
+function updateChart(data) {
+    const ctx = document.getElementById('retirementChart').getContext('2d');
+    
+    if (chart) {
+        chart.destroy();
+    }
+
+    chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: data.map(d => d.age),
+            datasets: [{
+                label: 'Retirement Balance',
+                data: data.map(d => d.balance),
+                borderColor: '#1877F2',
+                backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                borderWidth: 3,
+                fill: true,
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return 'Balance: ' + formatCurrency(context.parsed.y);
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return '$' + (value / 1000).toFixed(0) + 'K';
+                        }
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Age'
+                    }
+                }
+            }
+        }
+    });
+}
+
+document.querySelectorAll('input, select').forEach(input => {
+    input.addEventListener('input', calculate);
 });
 
-function runCalculation() {
-  tbody.innerHTML = "";
-
-  const currentAge = +currentAgeInput.value;
-  const retireAge = +retireAgeInput.value;
-  const lastAge = +lastAgeInput.value;
-
-  let income = +incomeInput.value;
-  let balance = +savingsInput.value;
-
-  const saveRate = +saveRateInput.value / 100;
-  const returnRate = +returnRateInput.value / 100;
-  const inflation = +inflationInput.value / 100;
-  const baseSpend = +spendInput.value;
-
-  const ages = [];
-  const balances = [];
-
-  for (let age = currentAge; age <= lastAge; age++) {
-    if (age < retireAge) {
-      const contribution = income * saveRate;
-      balance = (balance + contribution) * (1 + returnRate);
-      income *= (1 + inflation);
-    } else {
-      const yearsRetired = age - retireAge;
-      const withdrawal = baseSpend * Math.pow(1 + inflation, yearsRetired);
-      balance = (balance - withdrawal) * (1 + returnRate);
-    }
-
-    ages.push(age);
-    balances.push(balance);
-
-    const row = tbody.insertRow();
-    row.insertCell().textContent = age;
-    row.insertCell().textContent = balance.toFixed(0);
-  }
-
-  const retirementBalance = balances[ages.indexOf(retireAge)];
-  const finalBalance = balances[balances.length - 1];
-
-  summary.textContent =
-    `Savings at retirement: $${retirementBalance.toFixed(0)} | ` +
-    `Final surplus/shortfall: $${finalBalance.toFixed(0)}`;
-
-  drawChart(ages, balances);
+function resetValues() {
+    document.getElementById('currentAge').value = 0;
+    document.getElementById('retirementAge').value = 0;
+    document.getElementById('currentIncome').value = 0;
+    document.getElementById('incomeIncrease').value = 0;
+    document.getElementById('currentSavings').value = 0;
+    document.getElementById('savingsRate').value = 0;
+    document.getElementById('retirementSpending').value = 0;
+    document.getElementById('returnBeforeRetirement').value = 0;
+    document.getElementById('returnDuringRetirement').value = 0;
+    document.getElementById('inflationRate').value = 0.0;
+    calculate();
 }
 
-function drawChart(ages, balances) {
-  if (chart) chart.destroy();
-
-  chart = new Chart(document.getElementById("chart"), {
-    type: "line",
-    data: {
-      labels: ages,
-      datasets: [{
-        label: "Retirement Balance",
-        data: balances,
-        borderWidth: 2,
-        fill: false
-      }]
-    }
-  });
-}
+calculate();
