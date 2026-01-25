@@ -95,19 +95,19 @@ function calculate() {
     const finalBalanceCard = document.getElementById('finalBalanceCard');
     
     if (finalBalance > 500000) {
-        statusElement.textContent = 'On Track ✓';
+        statusElement.textContent = 'Controlado ✅';
         statusCard.classList.remove('warning', 'danger');
         statusCard.classList.add('success');
         finalBalanceCard.classList.remove('warning', 'danger');
         finalBalanceCard.classList.add('success');
     } else if (finalBalance > 0) {
-        statusElement.textContent = 'Needs Attention';
+        statusElement.textContent = 'Precaución ⚠️';
         statusCard.classList.remove('success', 'danger');
         statusCard.classList.add('warning');
         finalBalanceCard.classList.remove('success', 'danger');
         finalBalanceCard.classList.add('warning');
     } else {
-        statusElement.textContent = 'Shortfall ⚠';
+        statusElement.textContent = 'Peligro 🚨';
         statusCard.classList.remove('success', 'warning');
         statusCard.classList.add('danger');
         finalBalanceCard.classList.remove('success', 'warning');
@@ -131,7 +131,7 @@ function updateChart(data) {
             datasets: [{
                 label: 'Retirement Balance',
                 data: data.map(d => d.balance),
-                borderColor: '#667eea',
+                borderColor: '#1877F2',
                 backgroundColor: 'rgba(102, 126, 234, 0.1)',
                 borderWidth: 3,
                 fill: true,
