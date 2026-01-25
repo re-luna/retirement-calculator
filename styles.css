@@ -28,6 +28,28 @@ body {
     color: var(--text-dark);
 }
 
+button {
+    width: 100%;
+    padding: 15px;
+    background: var(--gold-rich);
+    color: white;
+    border: none;
+    border-radius: var(--radius);
+    font-size: 1rem;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+button:hover {
+  transform: translate(-0.05em, -0.05em);
+  box-shadow: 0.15em 0.15em;
+}
+
+button:active {
+  transform: translate(0.05em, 0.05em);
+  box-shadow: 0.05em 0.05em;
+}
+
 .container {
     max-width: 1400px;
     margin: 0 auto;
@@ -70,6 +92,18 @@ body {
 
 .input-group {
     margin-bottom: 25px;
+}
+
+.input-group .button {
+    padding: 10px 15px;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    background-color: var(--button-bg);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 .input-group label {
