@@ -177,4 +177,18 @@ document.querySelectorAll('input, select').forEach(input => {
     input.addEventListener('input', calculate);
 });
 
+function resetValues() {
+    document.getElementById('currentAge').value = 0;
+    document.getElementById('retirementAge').value = 0;
+    document.getElementById('currentIncome').value = 0;
+    document.getElementById('incomeIncrease').value = 0;
+    document.getElementById('currentSavings').value = 0;
+    document.getElementById('savingsRate').value = 0;
+    document.getElementById('retirementSpending').value = 0;
+    document.getElementById('returnBeforeRetirement').value = 0;
+    document.getElementById('returnDuringRetirement').value = 0;
+    document.getElementById('inflationRate').value = 0.0;
+    calculate();
+}
+
 calculate();
