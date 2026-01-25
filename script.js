@@ -4,7 +4,7 @@ function formatCurrency(value) {
     return '$' + Math.round(value).toLocaleString();
 }
 
-function calculateSocialSecurity(income, maritalStatus) {
+function calculateSocialSecurity(income, maritalStatus = 'single') {
     const maxBenefit = maritalStatus === 'married' ? 62400 : 41400;
     const baseBenefit = Math.min(income * 0.35, maxBenefit);
     return baseBenefit;
@@ -21,7 +21,7 @@ function calculate() {
     const returnBeforeRetirement = parseFloat(document.getElementById('returnBeforeRetirement').value) / 100;
     const returnDuringRetirement = parseFloat(document.getElementById('returnDuringRetirement').value) / 100;
     const inflationRate = parseFloat(document.getElementById('inflationRate').value) / 100;
-    const maritalStatus = document.getElementById('maritalStatus').value;
+    const maritalStatus = document.getElementById('maritalStatus')?.value || 'single';
 
     const endAge = 95;
     let balance = currentSavings;
