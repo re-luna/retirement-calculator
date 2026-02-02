@@ -1,3 +1,4 @@
+const { describe } = require('yargs');
 const {
     calculateSocialSecurity,
     calculateRetirementData,
@@ -216,5 +217,28 @@ describe('calculateRetirementData', () => {
         expect(row).toHaveProperty('withdrawal');
         expect(row).toHaveProperty('balance');
         expect(row).toHaveProperty('isRetired');
+    });
+});
+
+describe('Reset Values Function', () => {
+    test('resetValues sets default input values', () => {
+        // Mock document.getElementById
+        global.document = {
+            getElementById: jest.fn().mockImplementation((id) => {
+                return { value: baseParams[id] || 0 };
+            })
+        };
+        resetValues();
+        expect(global.document.getElementById).toHaveBeenCalledWith('currentAge');
+        expect(global.document.getElementById).toHaveBeenCalledWith('retirementAge');
+        expect(global.document.getElementById).toHaveBeenCalledWith('currentIncome');
+        expect(global.document.getElementById).toHaveBeenCalledWith('incomeIncrease');
+        expect(global.document.getElementById).toHaveBeenCalledWith('currentSavings');
+        expect(global.document.getElementById).toHaveBeenCalledWith('savingsRate');
+        expect(global.document.getElementById).toHaveBeenCalledWith('retirementSpending');
+        expect(global.document.getElementById).toHaveBeenCalledWith('returnBeforeRetirement');
+        expect(global.document.getElementById).toHaveBeenCalledWith('returnDuringRetirement');
+        expect(global.document.getElementById).toHaveBeenCalledWith('inflationRate');
+        expect(global.document.getElementById).toHaveBeenCalledWith('finalBalanceGoal');
     });
 });
