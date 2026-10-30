@@ -1,137 +1,343 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#4A2F2A">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Retirement Plan Calculator</title>
+    <meta name="description" id="metaDescription" content="Proyecta tu retiro en tu moneda con supuestos editables de inflación, comisiones, impuestos e ingresos.">
+    <meta property="og:type" content="website">
+    <meta property="og:title" id="ogTitle" content="Calculadora de plan de retiro | CalculatOR">
+    <meta property="og:description" id="ogDescription" content="Proyecta tu retiro en tu moneda con supuestos editables de inflación, comisiones, impuestos e ingresos.">
+    <meta property="og:url" content="./">
+    <link rel="canonical" href="./">
+    <link rel="alternate" hreflang="es-MX" href="./?localeSelector=es-MX">
+    <link rel="alternate" hreflang="es-ES" href="./?localeSelector=es-ES">
+    <link rel="alternate" hreflang="en-US" href="./?localeSelector=en-US">
+    <link rel="alternate" hreflang="pt-BR" href="./?localeSelector=pt-BR">
+    <link rel="alternate" hreflang="it-IT" href="./?localeSelector=it-IT">
+    <link rel="alternate" hreflang="x-default" href="./">
+    <script type="application/ld+json" id="structuredData">
+        {"@context":"https://schema.org","@type":"WebApplication","name":"CalculatOR","applicationCategory":"FinanceApplication","operatingSystem":"Any","description":"Proyecta tu retiro en tu moneda con supuestos editables de inflación, comisiones, impuestos e ingresos."}
+    </script>
+    <title>Calculadora de plan de retiro | CalculatOR</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <link rel="stylesheet" href="styles.css">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2904664609444026"
-     crossorigin="anonymous"></script>
+        crossorigin="anonymous"></script>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>💰 CalculatOR</h1>
-            <p> Criterio Compounding™: si no lo calculas, no es una decisión.</p>
+        <header class="header">
+            <h1>CalculatOR</h1>
+            <p data-i18n="tagline">Criterio Compounding: si no lo calculas, no es una decisión.</p>
+            <p class="trust-note" data-i18n="trustNote">Herramienta educativa; los resultados dependen de tus supuestos y no son asesoría financiera ni fiscal.</p>
+            <div class="locale-controls">
+                <label for="localeSelector">
+                    <span data-i18n="language">Idioma</span>
+                    <select id="localeSelector">
+                        <option value="es-MX" selected>Español (Latam)</option>
+                        <option value="es-ES">Español (España)</option>
+                        <option value="en-US">English</option>
+                        <option value="pt-BR">Português (Brasil)</option>
+                        <option value="it-IT">Italiano (Italia)</option>
+                    </select>
+                </label>
+                <label for="currencySelector">
+                    <span data-i18n="currency">Moneda</span>
+                    <select id="currencySelector">
+                        <option value="EUR">EUR</option>
+                        <option value="MXN" selected>MXN</option>
+                        <option value="ARS">ARS</option>
+                        <option value="BRL">BRL</option>
+                        <option value="USD">USD</option>
+                        <option value="GBP">GBP</option>
+                        <option value="TRY">TRY</option>
+                    </select>
+                </label>
+            </div>
+        </header>
+
+        <div class="mobile-result" aria-live="polite" aria-atomic="true">
+            <span id="mobileResultHeading">Tu dinero dura hasta los</span>
+            <strong id="mobileResultValue">76 años</strong>
         </div>
 
-        <div class="content">
-            <div class="input-section">
-                <h2 class="section-title">Tu información</h2>
-                
-                <div class="input-group">
-                    <label for="currentAge">¿Cuál es tu edad actual?</label>
-                    <input type="number" id="currentAge" value="0" min="18" max="100">
-                </div>
+        <main class="content">
+            <section class="input-section" aria-labelledby="inputSectionTitle">
+                <h2 class="section-title" id="inputSectionTitle" data-i18n="inputs">Tu información</h2>
 
                 <div class="input-group">
-                    <label for="retirementAge">¿A qué edad planeas retirarte?</label>
-                    <input type="number" id="retirementAge" value="0" min="50" max="100">
+                    <label for="currentAge" data-i18n="currentAge">¿Cuál es tu edad actual?</label>
+                    <input type="number" id="currentAge" value="30" min="0" max="120" aria-describedby="currentAgeError">
+                    <span class="input-error" id="currentAgeError" hidden></span>
                 </div>
-
                 <div class="input-group">
-                    <label for="currentIncome">¿Cuánto es tu ingreso anual?</label>
-                    <input type="number" id="currentIncome" value="0" step="500">
-                    <div class="input-helper">Ingreso total familiar o personal</div>
+                    <label for="retirementAge" data-i18n="retirementAge">¿A qué edad planeas retirarte?</label>
+                    <input type="number" id="retirementAge" value="65" min="0" max="120" aria-describedby="retirementAgeError">
+                    <span class="input-error" id="retirementAgeError" hidden></span>
                 </div>
-
                 <div class="input-group">
-                    <label for="incomeIncrease">¿Cuánto esperas que incrementen tus ingresos anuales? (%)</label>
-                    <input type="number" id="incomeIncrease" value="0" step="0.1" min="0" max="20">
+                    <label for="currentIncome" data-i18n="currentIncome">¿Cuánto es tu ingreso anual?</label>
+                    <input type="text" inputmode="decimal" id="currentIncome" value="30000" aria-describedby="currentIncomeError">
+                    <span class="input-error" id="currentIncomeError" hidden></span>
+                    <div class="input-helper" data-i18n="currentIncomeHelper">Ingreso total familiar o personal</div>
                 </div>
-
                 <div class="input-group">
-                    <label for="currentSavings">¿Cuánto tienes ahorrado hasta hoy? ($)</label>
-                    <input type="number" id="currentSavings" value="0" step="500">
-                    <div class="input-helper">Incluye tus ahorros en cuentas de inversión o ahorro.</div>
+                    <label for="savingsRate" data-i18n="savingsRate">¿Cuánto planeas ahorrar cada año para tu retiro? (%)</label>
+                    <input type="text" inputmode="decimal" id="savingsRate" value="10" aria-describedby="savingsRateError">
+                    <span class="input-error" id="savingsRateError" hidden></span>
                 </div>
-
                 <div class="input-group">
-                    <label for="savingsRate">¿Cuánto planeas ahorrar cada año para tu retiro? (%)</label>
-                    <input type="number" id="savingsRate" value="0" step="0.5" min="0" max="100">
+                    <label for="retirementSpending" data-i18n="retirementSpending">¿Cuánto planeas gastar al año durante el retiro, en dinero de hoy?</label>
+                    <input type="text" inputmode="decimal" id="retirementSpending" value="25000" aria-describedby="retirementSpendingError">
+                    <span class="input-error" id="retirementSpendingError" hidden></span>
                 </div>
+                <details class="advanced-settings">
+                    <summary data-i18n="advanced">Ajustes globales</summary>
+                    <div class="input-group">
+                        <label for="currentSavings" data-i18n="currentSavings">¿Cuánto tienes ahorrado hasta hoy?</label>
+                        <input type="text" inputmode="decimal" id="currentSavings" value="10000" aria-describedby="currentSavingsError">
+                        <span class="input-error" id="currentSavingsError" hidden></span>
+                        <div class="input-helper" data-i18n="currentSavingsHelper">Incluye tus ahorros en cuentas de inversión o ahorro.</div>
+                    </div>
+                    <div class="input-group">
+                        <label for="incomeIncrease" data-i18n="incomeIncrease">¿Cuánto esperas que incrementen tus ingresos anuales? (%)</label>
+                        <input type="text" inputmode="decimal" id="incomeIncrease" value="2" aria-describedby="incomeIncreaseError">
+                        <span class="input-error" id="incomeIncreaseError" hidden></span>
+                    </div>
+                    <div class="input-group">
+                        <label for="returnBeforeRetirement" data-i18n="returnBefore">¿Cuál es el rendimiento anual esperado antes del retiro? (%)</label>
+                        <input type="text" inputmode="decimal" id="returnBeforeRetirement" value="6" aria-describedby="returnBeforeRetirementError">
+                        <span class="input-error" id="returnBeforeRetirementError" hidden></span>
+                        <div class="input-helper" data-i18n="returnHelp">Usa una estimación anual prudente para tu mezcla de inversiones.</div>
+                    </div>
+                    <div class="input-group">
+                        <label for="returnDuringRetirement" data-i18n="returnDuring">¿Cuál es el rendimiento anual esperado durante el retiro? (%)</label>
+                        <input type="text" inputmode="decimal" id="returnDuringRetirement" value="4" aria-describedby="returnDuringRetirementError">
+                        <span class="input-error" id="returnDuringRetirementError" hidden></span>
+                        <div class="input-helper" data-i18n="returnHelp">Usa una estimación anual prudente para tu mezcla de inversiones.</div>
+                    </div>
+                    <div class="input-group">
+                        <label for="inflationRate" data-i18n="inflationRate">¿Cuál es la inflación esperada? (%)</label>
+                        <input type="text" inputmode="decimal" id="inflationRate" value="2" aria-describedby="inflationRateError">
+                        <span class="input-error" id="inflationRateError" hidden></span>
+                        <div class="input-helper" data-i18n="inflationHelp">Consulta la meta o proyección de largo plazo del banco central de tu país.</div>
+                    </div>
+                    <div class="input-group">
+                        <label for="finalBalanceGoal" data-i18n="finalBalanceGoal">¿Cuánto quieres dejar como herencia?</label>
+                        <input type="text" inputmode="decimal" id="finalBalanceGoal" value="250000" aria-describedby="finalBalanceGoalError">
+                        <span class="input-error" id="finalBalanceGoalError" hidden></span>
+                    </div>
+                    <div class="input-group">
+                        <label for="endAge" data-i18n="endAge">¿Hasta qué edad quieres planificar?</label>
+                        <input type="number" id="endAge" value="95" min="0" max="120" aria-describedby="endAgeError">
+                        <span class="input-error" id="endAgeError" hidden></span>
+                    </div>
+                    <div class="input-group">
+                        <label for="annualFeeRate" data-i18n="annualFee">Comisiones anuales (%)</label>
+                        <input type="text" inputmode="decimal" id="annualFeeRate" value="0" aria-describedby="annualFeeRateError">
+                        <span class="input-error" id="annualFeeRateError" hidden></span>
+                        <div class="input-helper" data-i18n="feeHelp">Incluye fondos, plataforma, asesoría y comisiones del broker.</div>
+                    </div>
+                    <div class="input-group">
+                        <label for="withdrawalTaxRate" data-i18n="withdrawalTax">Impuestos efectivos sobre retiros (%)</label>
+                        <input type="text" inputmode="decimal" id="withdrawalTaxRate" value="0" aria-describedby="withdrawalTaxRateError">
+                        <span class="input-error" id="withdrawalTaxRateError" hidden></span>
+                        <div class="input-helper" data-i18n="taxHelp">Estima la tasa efectiva de tu caso; la herramienta no aplica leyes locales.</div>
+                    </div>
+                    <div class="input-group">
+                        <label for="otherIncomeAmount" data-i18n="otherIncome">Otros ingresos anuales durante el retiro (valor de hoy)</label>
+                        <input type="text" inputmode="decimal" id="otherIncomeAmount" value="0" aria-describedby="otherIncomeAmountError">
+                        <span class="input-error" id="otherIncomeAmountError" hidden></span>
+                        <div class="input-helper" data-i18n="otherIncomeHelp">Incluye pensión, rentas u otros ingresos recurrentes.</div>
+                    </div>
+                    <div class="input-group">
+                        <label for="otherIncomeStartAge" data-i18n="otherIncomeStart">Edad en que empiezan esos ingresos</label>
+                        <input type="number" id="otherIncomeStartAge" value="65" min="0" max="120" aria-describedby="otherIncomeStartAgeError">
+                        <span class="input-error" id="otherIncomeStartAgeError" hidden></span>
+                    </div>
+                    <label class="inline-toggle" for="otherIncomeIndexed">
+                        <input type="checkbox" id="otherIncomeIndexed" checked>
+                        <span data-i18n="otherIncomeIndexed">Se ajustan por inflación</span>
+                    </label>
+                    <div class="input-group">
+                        <label for="savingsMode" data-i18n="savingsMode">Cómo ahorrar</label>
+                        <select id="savingsMode">
+                            <option value="percentage" data-i18n="savingsPercentage">Porcentaje del ingreso</option>
+                            <option value="fixed" data-i18n="savingsFixed">Monto fijo mensual</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="fixedMonthlySavings" data-i18n="fixedMonthly">Ahorro fijo mensual</label>
+                        <input type="text" inputmode="decimal" id="fixedMonthlySavings" value="0" aria-describedby="fixedMonthlySavingsError">
+                        <span class="input-error" id="fixedMonthlySavingsError" hidden></span>
+                    </div>
+                    <div class="input-group">
+                        <label for="contributionGrowth" data-i18n="contributionGrowth">Aumento anual del ahorro fijo (%)</label>
+                        <input type="text" inputmode="decimal" id="contributionGrowth" value="0" aria-describedby="contributionGrowthError">
+                        <span class="input-error" id="contributionGrowthError" hidden></span>
+                    </div>
+                    <div class="input-group">
+                        <label for="annualDebtPayment" data-i18n="annualDebt">Pago anual de deuda</label>
+                        <input type="text" inputmode="decimal" id="annualDebtPayment" value="0" aria-describedby="annualDebtPaymentError">
+                        <span class="input-error" id="annualDebtPaymentError" hidden></span>
+                    </div>
+                    <div class="input-group">
+                        <label for="debtUntilAge" data-i18n="debtUntil">Pagar deuda hasta la edad</label>
+                        <input type="number" id="debtUntilAge" value="65" min="0" max="120" aria-describedby="debtUntilAgeError">
+                        <span class="input-error" id="debtUntilAgeError" hidden></span>
+                    </div>
+                    <div class="input-group">
+                        <label for="eventAge" data-i18n="eventAge">Edad del evento único</label>
+                        <input type="number" id="eventAge" value="65" min="0" max="120" aria-describedby="eventAgeError">
+                        <span class="input-error" id="eventAgeError" hidden></span>
+                    </div>
+                    <div class="input-group">
+                        <label for="eventAmount" data-i18n="eventAmount">Monto del evento (negativo es un gasto)</label>
+                        <input type="text" inputmode="decimal" id="eventAmount" value="0" aria-describedby="eventAmountError">
+                        <span class="input-error" id="eventAmountError" hidden></span>
+                    </div>
+                    <div class="input-group">
+                        <label for="returnVolatility" data-i18n="returnVolatility">Volatilidad anual estimada (%)</label>
+                        <input type="text" inputmode="decimal" id="returnVolatility" value="15" aria-describedby="returnVolatilityError">
+                        <span class="input-error" id="returnVolatilityError" hidden></span>
+                    </div>
+                </details>
+            </section>
 
-                <div class="input-group">
-                    <label for="retirementSpending">¿Cuánto planeas gastar anualmente durante tu retiro? ($)</label>
-                    <input type="number" id="retirementSpending" value="0" step="1000">
-                </div>
-
-                <div class="input-group">
-                    <label for="returnBeforeRetirement">¿Cuál es el rendimiento esperado anual antes del retiro? (%)</label>
-                    <input type="number" id="returnBeforeRetirement" value="0" step="0.1" min="0" max="30">
-                </div>
-
-                <div class="input-group">
-                    <label for="returnDuringRetirement">¿Cuál es el rendimiento esperado anual durante el retiro? (%)</label>
-                    <input type="number" id="returnDuringRetirement" value="0" step="0.1" min="0" max="30">
-                </div>
-
-                <div class="input-group">
-                    <label for="inflationRate">¿Tasa de inflación esperada? (%)</label>
-                    <input type="number" id="inflationRate" value="0" step="0.1" min="0" max="20">
-                </div>
-
-                <div class="input-group">
-                    <label for="finalBalanceGoal">¿Cuanto quieres heredar? ($)</label>
-                    <input type="number" id="finalBalanceGoal" value="0" step="1000">
-                </div>
-
-            </div>
-
-            <div class="results-section">
-                <h2 class="section-title">Resultados</h2>
-                
+            <section class="results-section" aria-labelledby="resultsTitle">
+                <h2 class="section-title" id="resultsTitle" data-i18n="results">Resultados</h2>
+                <div id="resultAnnouncement" class="visually-hidden" aria-live="polite" aria-atomic="true"></div>
+                <label class="display-toggle" for="todaysMoneyToggle">
+                    <input type="checkbox" id="todaysMoneyToggle" checked>
+                    <span data-i18n="displayToday">Mostrar valores en dinero de hoy</span>
+                </label>
                 <div class="summary-cards">
                     <div class="summary-card" id="finalBalanceCard">
-                        <h3>Balance final a 95 años</h3>
+                        <h3 id="finalBalanceHeading" data-i18n="finalBalanceInitial">Balance final</h3>
                         <div class="value" id="finalBalance">$0</div>
                     </div>
                     <div class="summary-card" id="statusCard">
-                        <h3>Estado del retiro</h3>
-                        <div class="value" id="status">Calculate</div>
+                        <h3 data-i18n="statusTitle">Estado del retiro</h3>
+                        <div class="value" id="status">...</div>
                     </div>
                     <div class="summary-card">
-                        <h3>Contribuciones totales</h3>
+                        <h3 data-i18n="requiredSavingsRate">Ahorro necesario para la meta</h3>
+                        <div class="value" id="requiredSavingsRate">...</div>
+                    </div>
+                    <div class="summary-card">
+                        <h3 data-i18n="requiredCapital">Capital necesario para retirarte</h3>
+                        <div class="value" id="requiredCapital">...</div>
+                    </div>
+                    <div class="summary-card">
+                        <h3 data-i18n="maximumSpending">Gasto máximo sostenible</h3>
+                        <div class="value" id="maximumSpending">...</div>
+                    </div>
+                    <div class="summary-card">
+                        <h3 data-i18n="earliestRetirement">Edad más temprana para retirarte</h3>
+                        <div class="value" id="earliestRetirementAge">...</div>
+                    </div>
+                    <div class="summary-card">
+                        <h3 data-i18n="totalContributions">Contribuciones totales</h3>
                         <div class="value" id="totalContributions">$0</div>
                     </div>
                     <div class="summary-card">
-                        <h3>Retiros totales</h3>
+                        <h3 data-i18n="investmentGrowth">Crecimiento neto de inversión</h3>
+                        <div class="value" id="investmentGrowth">$0</div>
+                    </div>
+                    <div class="summary-card">
+                        <h3 data-i18n="totalWithdrawals">Retiros totales</h3>
                         <div class="value" id="totalWithdrawals">$0</div>
                     </div>
                 </div>
-
+                <section class="sensitivity-panel" aria-live="polite" aria-labelledby="sensitivityTitle">
+                    <h3 id="sensitivityTitle" data-i18n="sensitivityTitle">Qué palanca mueve más tu plan</h3>
+                    <dl>
+                        <div><dt data-i18n="sensitivitySavings">+1 punto de ahorro</dt><dd id="sensitivitySavings">...</dd></div>
+                        <div><dt data-i18n="sensitivityWork">+1 año trabajando</dt><dd id="sensitivityWork">...</dd></div>
+                        <div><dt data-i18n="sensitivityFees">-1 punto de comisiones</dt><dd id="sensitivityFees">...</dd></div>
+                    </dl>
+                </section>
+                <div class="stress-test">
+                    <button id="stressTestButton" type="button" data-i18n="stressTest">¿Y si el mercado cae 30% el año que te retiras?</button>
+                    <p id="stressTestResult" aria-live="polite" hidden></p>
+                </div>
+                <section class="simulation-panel" aria-labelledby="simulationAssumption">
+                    <p id="simulationAssumption" data-i18n="simulationAssumption">Supone rendimientos anuales independientes con distribución normal; cada escenario debe llegar al horizonte sin agotar el dinero y superar la meta de herencia. La probabilidad no es una garantía.</p>
+                    <button id="runSimulationButton" type="button" data-i18n="runSimulation">Simular 2.000 escenarios</button>
+                    <p id="simulationResult" aria-live="polite" hidden></p>
+                </section>
+                <div class="scenario-share">
+                    <button id="shareScenarioButton" type="button" data-i18n="shareScenario">Compartir este escenario</button>
+                    <label class="visually-hidden" for="shareLink" data-i18n="shareLinkLabel">Enlace del escenario</label>
+                    <input id="shareLink" type="text" readonly hidden>
+                    <p id="shareStatus" aria-live="polite" hidden></p>
+                </div>
+                <div class="export-controls">
+                    <button id="downloadCsvButton" type="button" data-i18n="downloadCsv">Descargar CSV</button>
+                    <button id="printReportButton" type="button" data-i18n="printReport">Imprimir o guardar como PDF</button>
+                    <a id="csvDownloadLink" download="calculator-retirement-scenario.csv" data-i18n="downloadCsv" hidden>Descargar CSV</a>
+                    <p id="csvExportStatus" aria-live="polite" hidden></p>
+                </div>
+                <div class="scenario-tools">
+                    <p class="input-helper" data-i18n="localOnly">Los escenarios guardados permanecen en este navegador.</p>
+                    <div class="scenario-buttons">
+                        <button id="saveScenarioAButton" type="button" data-i18n="saveScenarioA">Guardar como escenario A</button>
+                        <button id="saveScenarioBButton" type="button" data-i18n="saveScenarioB">Guardar como escenario B</button>
+                        <button id="compareScenariosButton" type="button" data-i18n="compareScenarios" disabled>Comparar A y B</button>
+                        <button id="clearScenariosButton" type="button" data-i18n="clearScenarios">Borrar escenarios guardados</button>
+                    </div>
+                    <p id="scenarioStatus" aria-live="polite" hidden></p>
+                    <div id="scenarioComparison" class="scenario-comparison" hidden>
+                        <section>
+                            <h3 data-i18n="scenarioA">Escenario A</h3>
+                            <p id="scenarioResultA"></p>
+                        </section>
+                        <section>
+                            <h3 data-i18n="scenarioB">Escenario B</h3>
+                            <p id="scenarioResultB"></p>
+                        </section>
+                    </div>
+                </div>
                 <div class="chart-container">
                     <canvas id="retirementChart"></canvas>
                 </div>
-
                 <div class="table-container">
                     <table>
                         <thead>
                             <tr>
-                                <th>Edad</th>
-                                <th>Ingreso</th>
-                                <th>Contribución</th>
-                                <th>Retiro</th>
-                                <th>Balance</th>
+                                <th data-i18n="age">Edad</th>
+                                <th data-i18n="income">Ingreso</th>
+                                <th data-i18n="contribution">Contribución</th>
+                                <th data-i18n="withdrawal">Retiro</th>
+                                <th id="balanceHeader">Balance</th>
                             </tr>
                         </thead>
-                        <tbody id="tableBody">
-                        </tbody>
+                        <tbody id="tableBody"></tbody>
                     </table>
                 </div>
+            </section>
+            <div class="reset-control">
+                <button onclick="resetValues()" type="button"><span data-i18n="reset">Empezar de nuevo</span></button>
             </div>
-                <div class="input-group">
-                    <button onclick="resetValues()">
-                        Empezar de Nuevo
-                    </button>
-                </div>
-        </div>
+        </main>
+        <footer class="trust-footer">
+            <p data-i18n="privacyStatement">Los valores que ingresas no se envían a nuestros servidores y se calculan en este navegador.</p>
+            <p data-i18n="thirdPartyPrivacy">Esta página carga servicios de publicidad y CDN de terceros, que pueden procesar datos técnicos según sus propias políticas.</p>
+            <details class="methodology">
+                <summary data-i18n="methodTitle">Cómo calculamos</summary>
+                <p data-i18n="methodTiming">La proyección usa pasos anuales. Durante el ahorro, el saldo rinde neto de comisiones y luego recibe el aporte y los eventos.</p>
+                <p data-i18n="methodAccumulation">Año de ahorro: saldo nuevo = saldo × (1 + rendimiento - comisión) + aporte + evento.</p>
+                <p data-i18n="methodWithdrawal">Año de retiro: retiro bruto = max(0, gasto + deuda - otros ingresos) / (1 - impuesto).</p>
+                <p data-i18n="methodPurchasingPower">Saldo en dinero de hoy = saldo nominal / (1 + inflación)^(edad - edad actual + 1).</p>
+                <p data-i18n="methodTaxes">El gasto en dinero de hoy se ajusta por inflación desde tu edad actual.</p>
+                <p data-i18n="methodValues">La opción de dinero de hoy divide cada saldo y flujo futuro entre la inflación acumulada.</p>
+                <p data-i18n="methodLimits">La herramienta no aplica leyes fiscales ni reglas de pensiones de ningún país.</p>
+            </details>
+        </footer>
     </div>
-
     <script src="calculator.js"></script>
 </body>
 </html>
