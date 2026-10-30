@@ -366,6 +366,10 @@ button:active {
     overflow-wrap: anywhere;
 }
 
+.export-controls a[hidden] {
+    display: none;
+}
+
 .export-controls p {
     margin: 8px 0 0;
     color: var(--coffee-deep);
@@ -395,6 +399,10 @@ button:active {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 18px;
     padding-top: 10px;
+}
+
+.scenario-comparison[hidden] {
+    display: none;
 }
 
 .scenario-comparison section + section {

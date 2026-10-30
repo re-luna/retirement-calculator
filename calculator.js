@@ -81,12 +81,13 @@ const TRANSLATIONS = {
         metaDescription: 'Proyecta tu retiro en tu moneda con supuestos editables de inflación, comisiones, impuestos e ingresos.',
         tagline: 'Criterio Compounding: si no lo calculas, no es una decisión.',
         trustNote: 'Herramienta educativa; los resultados dependen de tus supuestos y no son asesoría financiera ni fiscal.',
-        privacyStatement: 'Tus valores financieros se calculan y permanecen en este navegador.',
+        privacyStatement: 'Tus valores se calculan en este navegador. Al compartir, se incluyen en un enlace que el servicio de alojamiento podría registrar.',
+        thirdPartyPrivacy: 'Esta página carga servicios de publicidad y CDN de terceros, que pueden procesar datos técnicos según sus propias políticas.',
         methodTitle: 'Cómo calculamos',
         methodTiming: 'La proyección usa pasos anuales. Durante el ahorro, el saldo rinde neto de comisiones y luego recibe el aporte y los eventos. Durante el retiro, el retiro se descuenta antes del rendimiento anual.',
         methodTaxes: 'El gasto en dinero de hoy se ajusta por inflación desde tu edad actual. Otros ingresos reducen la necesidad de retiro antes de aplicar la tasa efectiva de impuestos. La deuda reduce el aporte antes del retiro y aumenta el gasto después.',
         methodValues: 'La opción de dinero de hoy divide cada saldo y flujo futuro entre la inflación acumulada. El cambio de vista no modifica el escenario calculado.',
-        methodLimits: 'La herramienta no aplica leyes fiscales ni reglas de pensiones de ningún país. Los resultados son estimaciones deterministas, no garantías ni asesoría.',
+        methodLimits: 'La herramienta no aplica leyes fiscales ni reglas de pensiones de ningún país. La proyección es determinista; la simulación opcional usa rendimientos normales independientes. Ningún resultado es garantía ni asesoría.',
         language: 'Idioma', currency: 'Moneda', inputs: 'Tu información', results: 'Resultados',
         currentAge: '¿Cuál es tu edad actual?', retirementAge: '¿A qué edad planeas retirarte?',
         currentIncome: '¿Cuánto es tu ingreso anual?', currentIncomeHelper: 'Ingreso total familiar o personal',
@@ -106,13 +107,16 @@ const TRANSLATIONS = {
         annualDebt: 'Pago anual de deuda', debtUntil: 'Pagar deuda hasta la edad',
         eventAge: 'Edad del evento único', eventAmount: 'Monto del evento (negativo es un gasto)',
         shareScenario: 'Compartir este escenario',
-        shareWarning: 'El enlace incluirá tus valores financieros. Cualquier persona que lo reciba podrá verlos. ¿Quieres continuar?',
+        shareWarning: 'El enlace incluirá tus valores financieros. Quienes lo reciban y el servicio que aloja la página podrían ver o registrar esos datos. ¿Continuar?',
         shareLinkLabel: 'Enlace del escenario', shareReady: 'Enlace listo para copiar.',
         shareInvalid: 'Corrige los campos antes de compartir.',
         saveScenarioA: 'Guardar como escenario A', saveScenarioB: 'Guardar como escenario B',
         compareScenarios: 'Comparar A y B', scenarioA: 'Escenario A', scenarioB: 'Escenario B',
         localOnly: 'Los escenarios guardados permanecen en este navegador.',
         scenarioSaved: 'Escenario {slot} guardado en este navegador.',
+        clearScenarios: 'Borrar escenarios guardados',
+        clearScenariosWarning: '¿Eliminar los escenarios A y B guardados en este navegador?',
+        scenariosCleared: 'Se eliminaron los escenarios guardados.',
         scenarioOutcome: '{outcome}. Saldo final: {balance}.', endingBalance: 'Saldo final',
         fixBeforeSave: 'Corrige los campos antes de guardar.', saveUnavailable: 'No se pudo guardar en este navegador.',
         downloadCsv: 'Descargar CSV', printReport: 'Imprimir o guardar como PDF',
@@ -132,7 +136,7 @@ const TRANSLATIONS = {
         returnVolatility: 'Volatilidad anual estimada (%)',
         runSimulation: 'Simular 2.000 escenarios',
         simulationResult: 'El plan alcanza la meta en {successes} de {simulations} escenarios ({probability}).',
-        simulationAssumption: 'Supone rendimientos anuales independientes con distribución normal; cada escenario debe llegar al horizonte sin agotar el dinero y superar la meta de herencia. La probabilidad no es una garantía.',
+        simulationAssumption: 'Usa rendimientos anuales normales independientes con la volatilidad indicada; los rendimientos extremos se limitan a -99%. Cada escenario debe llegar al horizonte y superar la meta de herencia. La probabilidad no es una garantía.',
         simulationRunning: 'Calculando escenarios…',
         depletesAt: 'se agota a los {age} años', survivesThrough: 'llega a los {age} años sin agotarse',
         contribution: 'Contribución', withdrawal: 'Retiro', balance: 'Balance', reset: 'Empezar de nuevo',
@@ -152,12 +156,13 @@ const TRANSLATIONS = {
         metaDescription: 'Project retirement in your currency with editable inflation, fee, tax, and income assumptions.',
         tagline: 'Compounding principle: if you do not calculate it, it is not a decision.',
         trustNote: 'Educational tool; results depend on your assumptions and are not financial or tax advice.',
-        privacyStatement: 'Your financial inputs are calculated and remain in this browser.',
+        privacyStatement: 'Your values are calculated in this browser. Sharing puts them in a link that the hosting service may log.',
+        thirdPartyPrivacy: 'This page loads third-party advertising and CDN services, which may process technical data under their own policies.',
         methodTitle: 'How we calculate',
         methodTiming: 'The projection uses annual steps. During saving, the balance earns returns net of fees, then receives the contribution and events. During retirement, withdrawals are deducted before the annual return.',
         methodTaxes: 'Today’s-money spending is adjusted for inflation from your current age. Other income offsets the withdrawal need before the effective tax rate is applied. Debt reduces contributions before retirement and increases spending afterward.',
         methodValues: 'Today’s-money view divides future balances and cash flows by accumulated inflation. Switching views does not change the projected scenario.',
-        methodLimits: 'The calculator does not apply any country’s tax laws or pension rules. Results are deterministic estimates, not guarantees or advice.',
+        methodLimits: 'The calculator does not apply any country’s tax laws or pension rules. The projection is deterministic; optional simulations use independent normal returns. No result is a guarantee or advice.',
         language: 'Language', currency: 'Currency', inputs: 'Your information', results: 'Results',
         currentAge: 'How old are you today?', retirementAge: 'At what age do you plan to retire?',
         currentIncome: 'What is your annual income?', currentIncomeHelper: 'Total personal or household income',
@@ -175,13 +180,16 @@ const TRANSLATIONS = {
         fixedMonthly: 'Fixed monthly savings', contributionGrowth: 'Annual growth of fixed savings (%)',
         annualDebt: 'Annual debt payment', debtUntil: 'Pay debt through age', eventAge: 'One-time event age',
         shareScenario: 'Share this scenario',
-        shareWarning: 'The link will include your financial inputs. Anyone who receives it can view them. Continue?',
+        shareWarning: 'The link will include your financial inputs. Recipients and the site host may view or log them. Continue?',
         shareLinkLabel: 'Scenario link', shareReady: 'Link ready to copy.',
         shareInvalid: 'Fix the invalid fields before sharing.',
         saveScenarioA: 'Save as scenario A', saveScenarioB: 'Save as scenario B',
         compareScenarios: 'Compare A and B', scenarioA: 'Scenario A', scenarioB: 'Scenario B',
         localOnly: 'Saved scenarios stay in this browser.',
         scenarioSaved: 'Scenario {slot} saved in this browser.',
+        clearScenarios: 'Clear saved scenarios',
+        clearScenariosWarning: 'Delete scenarios A and B saved in this browser?',
+        scenariosCleared: 'Saved scenarios were deleted.',
         scenarioOutcome: '{outcome}. Ending balance: {balance}.', endingBalance: 'Ending balance',
         fixBeforeSave: 'Fix the invalid fields before saving.', saveUnavailable: 'Could not save in this browser.',
         downloadCsv: 'Download CSV', printReport: 'Print or save as PDF',
@@ -201,7 +209,7 @@ const TRANSLATIONS = {
         returnVolatility: 'Estimated annual volatility (%)',
         runSimulation: 'Simulate 2,000 scenarios',
         simulationResult: 'The plan meets the goal in {successes} of {simulations} scenarios ({probability}).',
-        simulationAssumption: 'Assumes independent normally distributed annual returns; each scenario must survive through the horizon and exceed the inheritance goal. Probability is not a guarantee.',
+        simulationAssumption: 'Uses independent normal annual returns with the selected volatility; extreme returns are floored at -99%. Each scenario must survive through the horizon and exceed the inheritance goal. Probability is not a guarantee.',
         simulationRunning: 'Simulating scenarios…',
         depletesAt: 'runs out at age {age}', survivesThrough: 'lasts through age {age}',
         income: 'Income', contribution: 'Contribution', withdrawal: 'Withdrawal', balance: 'Balance',
@@ -221,12 +229,13 @@ const TRANSLATIONS = {
         metaDescription: 'Projete sua aposentadoria na sua moeda com premissas editáveis de inflação, taxas, impostos e renda.',
         tagline: 'Princípio dos juros compostos: sem calcular, não é uma decisão.',
         trustNote: 'Ferramenta educativa; os resultados dependem das suas premissas e não são aconselhamento financeiro ou fiscal.',
-        privacyStatement: 'Seus valores financeiros são calculados e permanecem neste navegador.',
+        privacyStatement: 'Seus valores são calculados neste navegador. Ao compartilhar, eles vão em um link que o serviço de hospedagem pode registrar.',
+        thirdPartyPrivacy: 'Esta página carrega serviços de publicidade e CDN de terceiros, que podem processar dados técnicos conforme suas próprias políticas.',
         methodTitle: 'Como calculamos',
         methodTiming: 'A projeção usa etapas anuais. Durante a poupança, o saldo rende após as taxas e depois recebe a contribuição e os eventos. Na aposentadoria, os saques são descontados antes do retorno anual.',
         methodTaxes: 'Os gastos em valores de hoje são corrigidos pela inflação desde a idade atual. Outra renda reduz a necessidade de saque antes da aplicação do imposto efetivo. A dívida reduz as contribuições antes da aposentadoria e aumenta os gastos depois.',
         methodValues: 'A visualização em valores de hoje divide saldos e fluxos futuros pela inflação acumulada. Alternar a visualização não altera o cenário projetado.',
-        methodLimits: 'A ferramenta não aplica leis fiscais nem regras de previdência de nenhum país. Os resultados são estimativas determinísticas, não garantias ou aconselhamento.',
+        methodLimits: 'A ferramenta não aplica leis fiscais nem regras de previdência de nenhum país. A projeção é determinística; a simulação opcional usa retornos normais independentes. Nenhum resultado é garantia ou aconselhamento.',
         language: 'Idioma', currency: 'Moeda', inputs: 'Suas informações', results: 'Resultados',
         currentAge: 'Qual é a sua idade atual?', retirementAge: 'Com que idade pretende se aposentar?',
         currentIncome: 'Qual é a sua renda anual?', currentIncomeHelper: 'Renda pessoal ou familiar total',
@@ -244,13 +253,16 @@ const TRANSLATIONS = {
         fixedMonthly: 'Poupança mensal fixa', contributionGrowth: 'Aumento anual da poupança fixa (%)',
         annualDebt: 'Pagamento anual de dívidas', debtUntil: 'Pagar dívidas até a idade', eventAge: 'Idade do evento único',
         shareScenario: 'Compartilhar este cenário',
-        shareWarning: 'O link incluirá seus dados financeiros. Qualquer pessoa que recebê-lo poderá visualizá-los. Continuar?',
+        shareWarning: 'O link incluirá seus dados financeiros. Quem recebê-lo e o serviço de hospedagem poderão visualizar ou registrar esses dados. Continuar?',
         shareLinkLabel: 'Link do cenário', shareReady: 'Link pronto para copiar.',
         shareInvalid: 'Corrija os campos inválidos antes de compartilhar.',
         saveScenarioA: 'Salvar como cenário A', saveScenarioB: 'Salvar como cenário B',
         compareScenarios: 'Comparar A e B', scenarioA: 'Cenário A', scenarioB: 'Cenário B',
         localOnly: 'Os cenários salvos ficam somente neste navegador.',
         scenarioSaved: 'Cenário {slot} salvo neste navegador.',
+        clearScenarios: 'Apagar cenários salvos',
+        clearScenariosWarning: 'Excluir os cenários A e B salvos neste navegador?',
+        scenariosCleared: 'Os cenários salvos foram excluídos.',
         scenarioOutcome: '{outcome}. Saldo final: {balance}.', endingBalance: 'Saldo final',
         fixBeforeSave: 'Corrija os campos inválidos antes de salvar.', saveUnavailable: 'Não foi possível salvar neste navegador.',
         downloadCsv: 'Baixar CSV', printReport: 'Imprimir ou salvar como PDF',
@@ -270,7 +282,7 @@ const TRANSLATIONS = {
         returnVolatility: 'Volatilidade anual estimada (%)',
         runSimulation: 'Simular 2.000 cenários',
         simulationResult: 'O plano atinge a meta em {successes} de {simulations} cenários ({probability}).',
-        simulationAssumption: 'Pressupõe retornos anuais independentes com distribuição normal; cada cenário deve chegar ao horizonte sem esgotar o dinheiro e superar a meta de herança. A probabilidade não é garantia.',
+        simulationAssumption: 'Usa retornos anuais normais independentes com a volatilidade selecionada; retornos extremos são limitados a -99%. Cada cenário deve chegar ao horizonte e superar a meta de herança. A probabilidade não é garantia.',
         simulationRunning: 'Calculando cenários…',
         depletesAt: 'acaba aos {age} anos', survivesThrough: 'dura até os {age} anos',
         income: 'Renda', contribution: 'Contribuição', withdrawal: 'Saque', balance: 'Saldo',
@@ -1071,6 +1083,25 @@ function updateScenarioControls() {
     }
 }
 
+function clearSavedScenarios() {
+    if (!window.confirm(translate('clearScenariosWarning'))) return false;
+    try {
+        window.localStorage.removeItem(savedScenarioKey('A'));
+        window.localStorage.removeItem(savedScenarioKey('B'));
+        document.getElementById('scenarioComparison').hidden = true;
+        updateScenarioControls();
+        const status = document.getElementById('scenarioStatus');
+        status.textContent = translate('scenariosCleared');
+        status.hidden = false;
+        return true;
+    } catch {
+        const status = document.getElementById('scenarioStatus');
+        status.textContent = translate('saveUnavailable');
+        status.hidden = false;
+        return false;
+    }
+}
+
 function saveScenarioLocally(slot) {
     calculate();
     const status = document.getElementById('scenarioStatus');
@@ -1217,6 +1248,7 @@ if (typeof document !== 'undefined') {
     document.getElementById('saveScenarioAButton').addEventListener('click', () => saveScenarioLocally('A'));
     document.getElementById('saveScenarioBButton').addEventListener('click', () => saveScenarioLocally('B'));
     document.getElementById('compareScenariosButton').addEventListener('click', compareSavedScenarios);
+    document.getElementById('clearScenariosButton').addEventListener('click', clearSavedScenarios);
     document.getElementById('downloadCsvButton').addEventListener('click', downloadCsv);
     document.getElementById('printReportButton').addEventListener('click', () => window.print());
     document.getElementById('runSimulationButton').addEventListener('click', event => {
@@ -1285,6 +1317,7 @@ if (typeof module !== 'undefined' && module.exports) {
         shareCurrentScenario,
         saveScenarioLocally,
         compareSavedScenarios,
+        clearSavedScenarios,
         downloadCsv,
         getRetirementStatus,
         formatCurrency,

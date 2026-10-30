@@ -10,6 +10,13 @@
     <meta property="og:type" content="website">
     <meta property="og:title" id="ogTitle" content="Calculadora de plan de retiro | CalculatOR">
     <meta property="og:description" id="ogDescription" content="Proyecta tu retiro en tu moneda con supuestos editables de inflación, comisiones, impuestos e ingresos.">
+    <meta property="og:url" content="./">
+    <link rel="canonical" href="./">
+    <link rel="alternate" hreflang="es-MX" href="./?localeSelector=es-MX">
+    <link rel="alternate" hreflang="es-ES" href="./?localeSelector=es-ES">
+    <link rel="alternate" hreflang="en-US" href="./?localeSelector=en-US">
+    <link rel="alternate" hreflang="pt-BR" href="./?localeSelector=pt-BR">
+    <link rel="alternate" hreflang="x-default" href="./">
     <script type="application/ld+json" id="structuredData">
         {"@context":"https://schema.org","@type":"WebApplication","name":"CalculatOR","applicationCategory":"FinanceApplication","operatingSystem":"Any","description":"Proyecta tu retiro en tu moneda con supuestos editables de inflación, comisiones, impuestos e ingresos."}
     </script>
@@ -272,6 +279,7 @@
                         <button id="saveScenarioAButton" type="button" data-i18n="saveScenarioA">Guardar como escenario A</button>
                         <button id="saveScenarioBButton" type="button" data-i18n="saveScenarioB">Guardar como escenario B</button>
                         <button id="compareScenariosButton" type="button" data-i18n="compareScenarios" disabled>Comparar A y B</button>
+                        <button id="clearScenariosButton" type="button" data-i18n="clearScenarios">Borrar escenarios guardados</button>
                     </div>
                     <p id="scenarioStatus" aria-live="polite" hidden></p>
                     <div id="scenarioComparison" class="scenario-comparison" hidden>
@@ -308,7 +316,8 @@
             </div>
         </main>
         <footer class="trust-footer">
-            <p data-i18n="privacyStatement">Tus valores financieros se calculan y permanecen en este navegador.</p>
+            <p data-i18n="privacyStatement">Los valores que ingresas no se envían a nuestros servidores y se calculan en este navegador.</p>
+            <p data-i18n="thirdPartyPrivacy">Esta página carga servicios de publicidad y CDN de terceros, que pueden procesar datos técnicos según sus propias políticas.</p>
             <details class="methodology">
                 <summary data-i18n="methodTitle">Cómo calculamos</summary>
                 <p data-i18n="methodTiming">La proyección usa pasos anuales. Durante el ahorro, el saldo rinde neto de comisiones y luego recibe el aporte y los eventos.</p>
