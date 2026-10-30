@@ -41,8 +41,8 @@ const DEFAULT_VALUES = {
 };
 
 const INPUT_RULES = {
-    currentAge: { min: 14, max: 120, integer: true },
-    retirementAge: { min: 30, max: 120, integer: true },
+    currentAge: { min: 0, max: 120, integer: true },
+    retirementAge: { min: 0, max: 120, integer: true },
     currentIncome: { min: 0, amount: true },
     incomeIncrease: { min: 0, max: 20 },
     currentSavings: { min: 0, amount: true },
@@ -52,19 +52,21 @@ const INPUT_RULES = {
     returnDuringRetirement: { min: 0, max: 30 },
     inflationRate: { min: 0, max: 200 },
     finalBalanceGoal: { min: 0, amount: true },
-    endAge: { min: 14, max: 120, integer: true },
+    endAge: { min: 0, max: 120, integer: true },
     annualFeeRate: { min: 0, max: 20 },
     withdrawalTaxRate: { min: 0, max: 95 },
     otherIncomeAmount: { min: 0, amount: true },
-    otherIncomeStartAge: { min: 14, max: 120, integer: true },
+    otherIncomeStartAge: { min: 0, max: 120, integer: true },
     fixedMonthlySavings: { min: 0, amount: true },
     contributionGrowth: { min: 0, max: 20 },
     annualDebtPayment: { min: 0, amount: true },
-    debtUntilAge: { min: 14, max: 120, integer: true },
-    eventAge: { min: 14, max: 120, integer: true },
+    debtUntilAge: { min: 0, max: 120, integer: true },
+    eventAge: { min: 0, max: 120, integer: true },
     eventAmount: { min: -1000000000, max: 1000000000, amount: true },
     returnVolatility: { min: 0, max: 100 }
 };
+
+const RESET_VALUES = Object.fromEntries(Object.keys(INPUT_RULES).map(id => [id, 0]));
 
 const SCENARIO_CONTROL_IDS = [
     ...Object.keys(INPUT_RULES),
@@ -1303,19 +1305,29 @@ if (typeof document !== 'undefined') {
 function resetValues() {
     clearTimeout(calculationTimer);
     calculationTimer = null;
-    Object.entries(DEFAULT_VALUES).forEach(([id, value]) => {
+    Object.entries(RESET_VALUES).forEach(([id, value]) => {
         document.getElementById(id).value = value;
     });
-    document.getElementById('otherIncomeIndexed').checked = true;
-    document.getElementById('todaysMoneyToggle').checked = true;
+    document.getElementById('savingsMode').value = 'percentage';
+    document.getElementById('localeSelector').value = DEFAULT_VALUES.localeSelector;
+    document.getElementById('currencySelector').value = DEFAULT_VALUES.currencySelector;
+    document.getElementById('otherIncomeIndexed').checked = false;
+    document.getElementById('todaysMoneyToggle').checked = false;
     document.getElementById('shareLink').hidden = true;
     document.getElementById('shareStatus').hidden = true;
+    document.getElementById('scenarioStatus').hidden = true;
+    document.getElementById('scenarioComparison').hidden = true;
+    document.getElementById('stressTestResult').hidden = true;
+    document.getElementById('simulationResult').hidden = true;
+    document.getElementById('csvDownloadLink').hidden = true;
+    document.getElementById('csvExportStatus').hidden = true;
     calculate();
 }
 
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
         DEFAULT_VALUES,
+        RESET_VALUES,
         INPUT_RULES,
         SCENARIO_CONTROL_IDS,
         TRANSLATIONS,

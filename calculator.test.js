@@ -1,5 +1,6 @@
 const {
     DEFAULT_VALUES,
+    RESET_VALUES,
     INPUT_RULES,
     parseLocalizedNumber,
     parseInputValue,
@@ -52,6 +53,15 @@ describe('DEFAULT_VALUES', () => {
     });
 });
 
+describe('RESET_VALUES', () => {
+    test('zeros every validated numeric field', () => {
+        expect(Object.values(RESET_VALUES).every(value => value === 0)).toBe(true);
+        expect(RESET_VALUES).toHaveProperty('currentAge', 0);
+        expect(RESET_VALUES).toHaveProperty('retirementAge', 0);
+        expect(RESET_VALUES).toHaveProperty('returnVolatility', 0);
+    });
+});
+
 describe('parseInputValue', () => {
     test('rejects blank and non-numeric values', () => {
         expect(parseInputValue('', INPUT_RULES.currentIncome).error).toBeTruthy();
@@ -60,7 +70,8 @@ describe('parseInputValue', () => {
     });
 
     test('enforces age and inflation bounds', () => {
-        expect(parseInputValue('13', INPUT_RULES.currentAge).error).toBeTruthy();
+        expect(parseInputValue('13', INPUT_RULES.currentAge).error).toBeNull();
+        expect(parseInputValue('121', INPUT_RULES.currentAge).error).toBeTruthy();
         expect(parseInputValue('250', INPUT_RULES.inflationRate).error).toBeTruthy();
         expect(parseInputValue('50', INPUT_RULES.inflationRate)).toEqual({ value: 50, error: null });
     });
