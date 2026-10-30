@@ -715,12 +715,14 @@ tbody tr:hover {
     }
 
     .locale-controls,
+    .mobile-result,
     .input-section,
     .display-toggle,
     .stress-test,
     .scenario-share,
     .scenario-tools,
     .export-controls,
+    .simulation-panel button,
     .reset-control {
         display: none !important;
     }
