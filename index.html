@@ -109,16 +109,19 @@
                         <label for="returnBeforeRetirement" data-i18n="returnBefore">¿Cuál es el rendimiento anual esperado antes del retiro? (%)</label>
                         <input type="text" inputmode="decimal" id="returnBeforeRetirement" value="6" aria-describedby="returnBeforeRetirementError">
                         <span class="input-error" id="returnBeforeRetirementError" hidden></span>
+                        <div class="input-helper" data-i18n="returnHelp">Usa una estimación anual prudente para tu mezcla de inversiones.</div>
                     </div>
                     <div class="input-group">
                         <label for="returnDuringRetirement" data-i18n="returnDuring">¿Cuál es el rendimiento anual esperado durante el retiro? (%)</label>
                         <input type="text" inputmode="decimal" id="returnDuringRetirement" value="4" aria-describedby="returnDuringRetirementError">
                         <span class="input-error" id="returnDuringRetirementError" hidden></span>
+                        <div class="input-helper" data-i18n="returnHelp">Usa una estimación anual prudente para tu mezcla de inversiones.</div>
                     </div>
                     <div class="input-group">
                         <label for="inflationRate" data-i18n="inflationRate">¿Cuál es la inflación esperada? (%)</label>
                         <input type="text" inputmode="decimal" id="inflationRate" value="2" aria-describedby="inflationRateError">
                         <span class="input-error" id="inflationRateError" hidden></span>
+                        <div class="input-helper" data-i18n="inflationHelp">Consulta la meta o proyección de largo plazo del banco central de tu país.</div>
                     </div>
                     <div class="input-group">
                         <label for="finalBalanceGoal" data-i18n="finalBalanceGoal">¿Cuánto quieres dejar como herencia?</label>
@@ -134,16 +137,19 @@
                         <label for="annualFeeRate" data-i18n="annualFee">Comisiones anuales (%)</label>
                         <input type="text" inputmode="decimal" id="annualFeeRate" value="0" aria-describedby="annualFeeRateError">
                         <span class="input-error" id="annualFeeRateError" hidden></span>
+                        <div class="input-helper" data-i18n="feeHelp">Incluye fondos, plataforma, asesoría y comisiones del broker.</div>
                     </div>
                     <div class="input-group">
                         <label for="withdrawalTaxRate" data-i18n="withdrawalTax">Impuestos efectivos sobre retiros (%)</label>
                         <input type="text" inputmode="decimal" id="withdrawalTaxRate" value="0" aria-describedby="withdrawalTaxRateError">
                         <span class="input-error" id="withdrawalTaxRateError" hidden></span>
+                        <div class="input-helper" data-i18n="taxHelp">Estima la tasa efectiva de tu caso; la herramienta no aplica leyes locales.</div>
                     </div>
                     <div class="input-group">
                         <label for="otherIncomeAmount" data-i18n="otherIncome">Otros ingresos anuales durante el retiro (valor de hoy)</label>
                         <input type="text" inputmode="decimal" id="otherIncomeAmount" value="0" aria-describedby="otherIncomeAmountError">
                         <span class="input-error" id="otherIncomeAmountError" hidden></span>
+                        <div class="input-helper" data-i18n="otherIncomeHelp">Incluye pensión, rentas u otros ingresos recurrentes.</div>
                     </div>
                     <div class="input-group">
                         <label for="otherIncomeStartAge" data-i18n="otherIncomeStart">Edad en que empiezan esos ingresos</label>
