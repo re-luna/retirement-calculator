@@ -2,6 +2,7 @@ const {
     DEFAULT_VALUES,
     RESET_VALUES,
     INPUT_RULES,
+    TRANSLATIONS,
     parseLocalizedNumber,
     parseInputValue,
     buildShareUrl,
@@ -50,6 +51,18 @@ describe('DEFAULT_VALUES', () => {
             localeSelector: 'es-MX',
             currencySelector: 'MXN'
         });
+    });
+});
+
+describe('Italian localization', () => {
+    test('provides every translation key used by the Spanish catalog', () => {
+        expect(Object.keys(TRANSLATIONS.it).sort()).toEqual(Object.keys(TRANSLATIONS.es).sort());
+    });
+
+    test('translates core UI and validation copy into Italian', () => {
+        expect(TRANSLATIONS.it.inputs).toBe('Le tue informazioni');
+        expect(TRANSLATIONS.it.errorRequired).toBe('Questo campo è obbligatorio.');
+        expect(TRANSLATIONS.it.reset).toBe('Azzera i valori');
     });
 });
 
@@ -123,6 +136,10 @@ describe('parseScenarioSearch', () => {
             currentIncome: 30000,
             otherIncomeIndexed: false
         });
+    });
+
+    test('accepts Italian locale in shared scenarios', () => {
+        expect(parseScenarioSearch('?localeSelector=it-IT')).toEqual({ localeSelector: 'it-IT' });
     });
 });
 
